@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= content_for?(:page_title) ? yield(:page_title) : 'Breakpoint App' %></title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <!--[if lt IE 9]>
+      <%= javascript_include_tag "html5shiv.js" %>
+      <%= javascript_include_tag "respond.js" %>
+    <![endif]-->
+    <%= csrf_meta_tags %>
+    <% if Rails.env == 'production' %>
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-38883939-1', 'breakpointapp.com');
+        ga('send', 'pageview');
+      </script>
+    <% end %>
+  </head>
+  <body class="<%= body_class %>">
+    <div class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <% if current_user %>
+            <%= link_to 'Breakpoint App', teams_path, :class => 'navbar-brand' %>
+          <% else %>
+            <%= link_to 'Breakpoint App', root_path, :class => 'navbar-brand' %>
+          <% end %>
+        </div>
+        <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
+          <% if user_signed_in? %>
+            <ul class="nav navbar-nav">
+              <li><%= link_to 'Teams', teams_path %></li>
+              <% if AdminPolicy.new(current_user).admin? %>
+                <li><%= link_to 'Admin', admin_users_path %></li>
+              <% end %>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><%= link_to "Help", "http://breakpointapp.uservoice.com/knowledgebase", target: "_blank" %></li>
+              <li><%= link_to current_user.name, edit_user_registration_path %></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Account <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to 'Change password', edit_change_password_path %></li>
+                  <li><%= link_to 'Edit profile', edit_user_registration_path %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to 'Sign out', destroy_user_session_path, :method => :delete %></li>
+                </ul>
+              </li>
+            </ul>
+          <% else %>
+            <ul class="nav navbar-nav navbar-right">
+              <li><%= link_to "Help", "http://breakpointapp.uservoice.com/knowledgebase", target: "_blank" %></li>
+              <li>
+                <%= form_tag new_user_session_path, class: 'navbar-form', method: 'get' do %>
+                  <%= submit_tag 'Sign in', class: 'btn btn-primary' %>
+                <% end %>
+              </li>
+            </ul>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <% if Rails.env.try_it? %>
+        <div class="flash">
+          <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            This is for demonstration only. All data will be RESET DAILY.
+            Go to <%= link_to "www.breakpointapp.com", "https://www.breakpointapp.com", class: "alert-link" %> when you are ready to create your own account.
+          </div>
+        </div>
+      <% end %>
+      <% flash.each do |name, msg| %>
+        <div class="flash">
+          <div class="alert alert-<%= flash_name_for_bootstrap(name)[:class] %>">
+            <span class="glyphicon glyphicon-<%= flash_name_for_bootstrap(name)[:icon] %>"></span>
+            <%= msg.html_safe %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if show_title? %>
+        <h1 class="page-header">
+          <%= yield :page_header %>
+          <% if content_for?(:subtitle) %>
+            <small>&raquo; <%= yield(:subtitle) %></small>
+          <% end %>
+        </h1>
+      <% end %>
+
+      <%= content_for?(:team_nav) ? yield(:team_nav) : yield %>
+
+      <footer>
+        <hr>
+        Need help? <%= mail_to "support@breakpointapp.com", "Email support", class: "support" %>
+      </footer>
+
+      <script>
+        UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/tbxW2jO4KwUufpuDpYR30w.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+        // Set colors
+        UserVoice.push(['set', {
+          accent_color: '#448dd6',
+          trigger_color: 'white',
+          trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+        }]);
+
+        UserVoice.push(['identify', {
+          <% if user_signed_in? %>
+            email:      '<%= current_user.email %>',
+            name:       '<%= current_user.name %>',
+            created_at: <%= current_user.created_at.to_i %>,
+            id:         <%= current_user.id %>,
+            type:       '<%= current_user.captain? ? "captain" : "member" %>',
+          <% end %>
+        }]);
+
+        UserVoice.push(['addTrigger', { mode: 'smartvote', trigger_position: 'bottom-right' }]);
+        UserVoice.push(['autoprompt', {}]);
+      </script>
+    </div>
+  </body>
+</html>
+

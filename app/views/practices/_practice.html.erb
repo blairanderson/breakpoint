@@ -1,0 +1,60 @@
+<% response = practice.response_for(current_user.id) %>
+<% show_yes_form = response.new_record? ? true : !response.yes? %>
+<% show_no_form = response.new_record? ? true : response.yes? %>
+<div class="panel panel-<%= response.new_record? ? 'default' : (response.yes? ? 'success' : 'danger') %>">
+  <div class="panel-heading">
+    <h3 class="panel-title clearfix">
+      <div class="pull-left">
+        <% if show_yes_form %>
+          <%= form_for [practice, response], html: { style: 'margin-bottom: 0px;' } do |f| %>
+            <%= f.hidden_field :state, value: "yes" %>
+            <%= hidden_field_tag :team_id, current_team.id %>
+            <%= submit_tag 'I can play', :class => 'btn btn-sm btn-default' %>
+          <% end %>
+        <% else %>
+          <button class="btn btn-sm btn-success" disabled="disabled">You can play</button>
+        <% end %>
+      </div>
+
+      <div class="pull-left" style="margin-left: 15px;">
+        <% if show_no_form %>
+          <%= form_for [practice, response], html: { style: 'margin-bottom: 0px;' } do |f| %>
+            <%= f.hidden_field :state, value: "no" %>
+            <%= hidden_field_tag :team_id, current_team.id %>
+            <%= submit_tag "I can't play", :class => 'btn btn-sm btn-default' %>
+          <% end %>
+        <% else %>
+          <button class="btn btn-sm btn-danger" disabled="disabled">You can't play</button>
+        <% end %>
+      </div>
+
+      <div class="pull-right">
+        <%= link_to 'Edit practice', edit_team_practice_path(current_team, practice), :class => 'btn btn-sm btn-default' %>
+      </div>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <%= render partial: 'shared/practice_details', locals: { practice: practice } %>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-3">
+            <label>Availability:</label>
+          </div>
+          <div class="col-md-9">
+            <p>
+              <%= link_to availability_email_team_practice_path(current_team, practice) do %>
+                <span class="glyphicon glyphicon-envelope"></span>
+                Preview and send availability email
+              <% end %>
+            </p>
+            <p>
+              <%= link_to "Who can play?", availabilities_team_practice_path(current_team, practice) %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

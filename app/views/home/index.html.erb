@@ -1,0 +1,27 @@
+<br>
+<% if Rails.env.try_it? %>
+  <div class="jumbotron">
+    <h1>Try Breakpoint App</h1>
+    <p>This is a preloaded version of Breakpoint App available for you to play around with.</p>
+    <p>EVERYTHING CREATED HERE will be <strong>RESET DAILY</strong></p>
+    <p>
+      <%= link_to "Sign in as a captain", try_it_sign_in_path(user: 'captain'), class: "btn btn-primary btn-lg" %>
+      <%= link_to "Sign in as a team member", try_it_sign_in_path(user: 'member'), class: "btn btn-primary btn-lg try-it" %>
+    </p>
+  </div>
+<% else %>
+  <div class="jumbotron">
+    <h1>Tennis Team Management</h1>
+    <ul>
+      <li><p><span class="glyphicon glyphicon-envelope"></span> Communicate with a team email address (team-name@mail.breakpointapp.com)</p></li>
+      <li><p><span class="glyphicon glyphicon-calendar"></span> Schedule matches and practices</p></li>
+      <li><p><span class="glyphicon glyphicon-ok"></span> Collect match availability</p></li>
+      <li><p><span class="glyphicon glyphicon-send"></span> Send automatic match lineup emails</p></li>
+    </ul>
+    <p>
+      <%= link_to "Sign up for free", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+      <%= link_to "Try Breakpoint App!", "http://try.breakpointapp.com", class: "btn btn-success btn-lg try-it" %>
+    </p>
+  </div>
+<% end %>
+

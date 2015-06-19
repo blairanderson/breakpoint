@@ -1,0 +1,144 @@
+<% subtitle 'Review team availability' %>
+
+<div class="row">
+  <div class="col-md-8">
+    <% @match.players_status.each do |status, players| %>
+      <div class="panel panel-<%= availability_label(status) %>">
+        <div class="panel-heading clearfix">
+          <h3 class="panel-title pull-left">
+            <%= status %>
+            <span class="badge"><%= players.size %></span>
+          </h3>
+          <div class="pull-right">
+            <a href="#" class="select-all btn btn-xs btn-<%= availability_label(status) %>">
+              <span class="glyphicon glyphicon-check"></span>
+              All
+            </a>
+            <a href="#" class="select-none btn btn-xs btn-<%= availability_label(status) %>">
+              <span class="glyphicon glyphicon-unchecked"></span>
+              None
+            </a>
+          </div>
+        </div>
+        <% if players.size > 0 %>
+          <div class="list-group <%= status.parameterize %>">
+            <% players.each do |player| %>
+              <a href="#" class="list-group-item" data-user-id="<%= player.last %>">
+                <span class="glyphicon glyphicon-unchecked"></span>
+                <%= player.first %>
+              </a>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="panel-body">
+            No players in this group
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Email selected players
+        <span class="badge selected-players">0</span>
+      </div>
+      <div class="panel-body">
+        <%= link_to player_request_email_team_match_path(current_team, @match), class: "player-request-email player-request-email-right btn btn-primary" do %>
+          <span class="glyphicon glyphicon-envelope"></span>
+          Preview and send player request email
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="alert alert-info">
+      <h4>Need more players?</h4>
+      Click the
+      <a href="#" class="btn btn-xs btn-info disabled">
+        <span class="glyphicon glyphicon-check"></span>
+        All
+      </a>
+      <a href="#" class="btn btn-xs btn-info disabled">
+        <span class="glyphicon glyphicon-unchecked"></span>
+        None
+      </a>
+      buttons or click individual players to select/deselect them.
+      <hr>
+      Once players are selected,
+      <%= link_to player_request_email_team_match_path(current_team, @match), class: "player-request-email player-request-email-bottom" do %>
+        <span class="glyphicon glyphicon-envelope"></span>
+        Preview and send player request email
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleSelectedPlayer(items, selected) {
+    $.each(items, function(index, item) {
+      if (selected) {
+        $(item).addClass('list-group-item-info');
+        $(item).children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+      } else {
+        $(item).removeClass('list-group-item-info');
+        $(item).children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+      }
+    });
+    $('.selected-players').text(selectedUserIds().length);
+    if (selectedUserIds().length > 0) {
+      $('.player-request-email').popover('hide');
+    }
+  }
+
+  function selectedUserIds() {
+    return $.map($('.list-group-item-info'), function(user) {
+      return $(user).data('user-id');
+    });
+  }
+
+  $(function() {
+    $('.player-request-email-right').popover({
+      html: true,
+      trigger: 'manual',
+      placement: 'right',
+      title: 'No players are selected',
+      content: "<%= j render partial: 'availability_help' %>"
+    });
+
+    $('.player-request-email-bottom').popover({
+      html: true,
+      trigger: 'manual',
+      placement: 'bottom',
+      title: 'No players are selected',
+      content: "<%= j render partial: 'availability_help' %>"
+    });
+
+    $('.player-request-email').on('click', function(e) {
+      e.preventDefault();
+
+      if (selectedUserIds().length > 0) {
+        window.location = $(this).prop('href') + "?user_ids=" + selectedUserIds().toString();
+      } else {
+        $(this).popover('show');
+      }
+    });
+
+    $('.select-all').on('click', function(e) {
+      e.preventDefault();
+      var items = $(this).closest('.panel').find('.list-group-item');
+      toggleSelectedPlayer(items, true);
+    });
+
+    $('.select-none').on('click', function(e) {
+      e.preventDefault();
+      var items = $(this).closest('.panel').find('.list-group-item');
+      toggleSelectedPlayer(items, false);
+    });
+
+    $('.list-group').on('click', '.list-group-item', function(e) {
+      e.preventDefault();
+      var currentlySelected = $(this).hasClass('list-group-item-info');
+      toggleSelectedPlayer($(this), !currentlySelected);
+    });
+  });
+</script>
+

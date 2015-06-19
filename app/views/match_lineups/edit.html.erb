@@ -1,0 +1,36 @@
+<% subtitle 'Set match lineup' %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Match details</h3>
+  </div>
+  <div class="panel-body">
+    <%= render partial: 'shared/match_details', locals: { match: @match } %>
+  </div>
+</div>
+
+<%= simple_form_for([current_team, @match]) do |f| %>
+  <%= f.error_messages %>
+    <%= f.simple_fields_for :match_lineups do |match_lineup_form| %>
+      <fieldset>
+        <legend><%= match_lineup_form.object.match_type %></legend>
+        <div class="row">
+          <%= match_lineup_form.simple_fields_for :match_players do |match_player_form| %>
+            <div class="col-md-3">
+              <%= match_player_form.input :user_id,
+                :collection   => @match.players_status,
+                :label        => false,
+                :as           => :grouped_select,
+                :value_mehod  => :last,
+                :label_method => :first,
+                :group_method => :last,
+                :group_label_mehod => :first %>
+            </div>
+          <% end %>
+        </div>
+      </fieldset>
+    <% end %>
+
+  <%= f.submit 'Save match lineup', :class => 'btn btn-primary' %>
+<% end %>
+

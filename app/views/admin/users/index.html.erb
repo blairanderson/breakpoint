@@ -1,0 +1,38 @@
+<% title 'Users' %>
+<% subtitle @users.size %>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Teams (<%= Team.count %>)</th>
+      <th>Sign in count</th>
+      <th>Last sign in at</th>
+      <th>Created at</th>
+      <th>Sign in</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= mail_to user.email %></td>
+      <td><%= user.phone_number %></td>
+      <td>
+        <% user.team_members.each do |member| %>
+          <span class="label label-<%= member.captain? ? "info" : "default" %>"><%= member.role %></span>
+          <%= member.team.name %>
+          <br>
+        <% end %>
+      </td>
+      <td><%= user.sign_in_count %></td>
+      <td><%= l user.last_sign_in_at if user.last_sign_in_at.present? %></td>
+      <td><%= l user.created_at %></td>
+      <td><%= link_to "become", become_admin_user_path(user), class: 'btn btn-xs btn-default' %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+

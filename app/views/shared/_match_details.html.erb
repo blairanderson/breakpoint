@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-5">
+    <div class="row">
+      <div class="col-md-3">
+        <label>When:</label>
+      </div>
+      <div class="col-md-9">
+        <p><%= l match.date, :format => :long %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <label>Where:</label>
+      </div>
+      <div class="col-md-9">
+        <strong><%= match.team_location %></strong>
+        <%= simple_format(match.location) %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <% if match.opponent.present? %>
+      <div class="row">
+        <div class="col-md-3 col-lg-2">
+          <label>Opponent:</label>
+        </div>
+        <div class="col-md-9 col-lg-10">
+          <p><%= match.opponent %></p>
+        </div>
+      </div>
+    <% end %>
+    <% if match.comment.present? %>
+      <div class="row">
+        <div class="col-md-3 col-lg-2">
+          <label>Comments:</label>
+        </div>   
+        <div class="col-md-9 col-lg-10">
+          <%= simple_format(match.comment) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

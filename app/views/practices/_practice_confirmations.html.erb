@@ -1,0 +1,23 @@
+<div class="panel panel-<%= availability_label(status) %>">
+  <div class="panel-heading clearfix">
+      <h3 class="panel-title pull-left">
+        <%= status %>
+        <span class="badge"><%= players.size %></span>
+      </h3>
+  </div>
+  <% if players.size > 0 %>
+    <div class="list-group <%= status.parameterize %>">
+      <% players.each do |player| %>
+        <div class="list-group-item">
+          <%= player.name %>
+          (<%= player.email %>)
+          <%= "- #{player.phone_number}" if player.phone_number.present? %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="panel-body">
+      No players in this group
+    </div>
+  <% end %>
+</div>

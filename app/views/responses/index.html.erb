@@ -1,0 +1,14 @@
+<% if current_team.upcoming_matches.empty? %>
+  <p class="alert alert-info">
+    No upcoming matches
+  </p>
+<% else %>
+  <h3>Upcoming player availability</h3>
+  <%= render partial: 'match_availabilities', locals: { matches: current_team.upcoming_matches } %>
+<% end %>
+
+<% if current_team.previous_matches.present? %>
+  <h3>Previous player availability</h3>
+  <%= render partial: 'match_availabilities', locals: { matches: current_team.previous_matches } %>
+<% end %>
+

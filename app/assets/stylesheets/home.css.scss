@@ -1,0 +1,33 @@
+body.home {
+  ul {
+    padding-left: 0px;
+  }
+
+  li {
+    list-style-type: none;
+  }
+}
+
+body.home-index {
+  background: image_url('roger.jpg') no-repeat;
+  background-size: cover;
+  color: #eee;
+
+  .jumbotron {
+    background-color: rgba(0,0,0,0.2);
+    h1 {
+      text-shadow: 2px 2px 10px black;
+    }
+  }
+
+  .try-it {
+    margin-left: 20px;
+  }
+
+  .support {
+    @extend .btn;
+    @extend .btn-default;
+    @extend .btn-xs;
+  }
+}
+

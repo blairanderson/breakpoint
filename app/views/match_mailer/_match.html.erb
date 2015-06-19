@@ -1,0 +1,92 @@
+<% if @preview %>
+  <p class="text-center">
+    YES, MAYBE, and NO links will be here, custom for each player
+  </p>
+<% else %>
+  <% if @availability.no_response? %>
+    <p style="text-align: center;">Can you play?</p>
+    <p style="text-align: center;">
+      <%= link_to "YES",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'yes',
+          token: @token),
+        style: "margin-right: 10px; font-size: 24px;" %>
+      |
+      <%= link_to "MAYBE",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'maybe',
+          token: @token),
+        style: "margin-right: 10px; margin-left: 10px; font-size: 24px;" %>
+      |
+      <%= link_to "NO",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'no',
+          token: @token),
+        style: "margin-left: 10px; font-size: 24px;" %>
+    </p>
+  <% elsif @availability.yes? %>
+    <p style="text-align: center;">You already replied yes.</p>
+    <p style="text-align: center;">
+      <span style="margin-right: 10px;">Change to:</span>
+      <%= link_to "MAYBE",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'maybe',
+          token: @token),
+        style: "margin-right: 10px; font-size: 24px;" %>
+      |
+      <%= link_to "NO",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'no',
+          token: @token),
+        style: "margin-left: 10px; font-size: 24px;" %>
+    </p>
+  <% elsif @availability.maybe? %>
+    <p style="text-align: center;">You already replied maybe.</p>
+    <p style="text-align: center;">
+      <span style="margin-right: 10px;">Change to:</span>
+      <%= link_to "YES",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'yes',
+          token: @token),
+        style: "margin-right: 10px; font-size: 24px;" %>
+      or
+      <%= link_to "NO",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'no',
+          token: @token),
+        style: "margin-left: 10px; font-size: 24px;" %>
+    </p>
+  <% elsif @availability.no? %>
+    <p style="text-align: center;">You already replied no.</p>
+    <p style="text-align: center;">
+      <span style="margin-right: 10px;">Change to:</span>
+      <%= link_to "YES",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'yes',
+          token: @token),
+        style: "margin-right: 10px; font-size: 24px;" %>
+      or
+      <%= link_to "MAYBE",
+        set_availability_team_responses_url(
+          @match.team,
+          available: 'maybe',
+          token: @token),
+        style: "margin-left: 10px; font-size: 24px;" %>
+    </p>
+  <% end %>
+<% end %>
+
+<%= render partial: 'shared/match_mailer', locals: { match: @match } %>
+
+<% if @comments.present? %>
+  <p><%= simple_format @comments %></p>
+<% end %>
+

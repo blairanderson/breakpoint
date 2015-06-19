@@ -1,0 +1,30 @@
+<% subtitle 'Matches' %>
+
+<% if @matches.present? %>
+  <p>
+    <% if policy(current_team).captain? %>
+      <%= link_to 'Add a match', new_team_match_path(current_team), :class => 'btn btn-default' %>
+      <%= link_to 'Import matches', import_team_matches_path(current_team), :class => "btn btn-default" %>
+    <% end %>
+    <%= link_to 'See who can play when', team_responses_path(current_team), :class => 'btn btn-default' %>
+  </p>
+  <%= render :partial => "matches", :object => @matches %>
+<% else %>
+  <% if policy(current_team).captain? %>
+    <div class="alert alert-info">
+      <h4>No matches for this team yet</h4>
+      <%= link_to 'Add a match', new_team_match_path(current_team), :class => "alert-link" %>
+      or
+      <%= link_to 'import matches (USTA only)', import_team_matches_path(current_team), :class => "alert-link" %> to get playing.
+    </div>
+    <p>
+      <%= link_to 'Add a match', new_team_match_path(current_team), :class => 'btn btn-default' %>
+      <%= link_to 'Import matches', import_team_matches_path(current_team), :class => "btn btn-default" %>
+    </p>
+  <% else %>
+    <div class="alert alert-info">
+      <h4>The captain has not added any matches yet</h4>
+    </div>
+  <% end %>
+<% end %>
+

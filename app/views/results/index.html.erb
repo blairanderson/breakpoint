@@ -1,0 +1,37 @@
+<% subtitle 'Results' %>
+
+<% if @matches.empty? %>
+  <div class="alert alert-block alert-info">
+    <h4>No results available because there are no matches for this team yet.</h4>
+    <%= link_to 'Add a match', new_team_match_path(@team) %> to record results.
+  </div>
+<% else %>
+  <% @matches.each do |match| %>
+    <div class="row">
+      <div class="span4">
+        <%= render :partial => 'match', :object => match %>
+        <%= link_to 'Record results', edit_results_match_path(match), :class => 'btn' %>
+      </div>
+      <div class="span6">
+
+        <% match.match_lineups.each do |lineup| %>
+          <%= render :partial => 'lineup', :object => lineup %>
+
+          <table class="table table-bordered table-condensed">
+            <% if lineup.has_results? %>
+              <tr class="<%= lineup.won? ? 'success' : 'danger' %>">
+            <% else %>
+              <tr>
+            <% end %>
+              <% lineup.match_sets.each do |set| %>
+                <td><%= "#{set.games_won}&ndash;#{set.games_lost}".html_safe %></td>
+              <% end %>
+            </tr>
+          </table>
+        <% end %>
+      </div>
+    </div>
+    <hr>
+  <% end %>
+<% end %>
+

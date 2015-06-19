@@ -1,0 +1,50 @@
+<h3>Add players</h3>
+<% if @add_team_members.users.size == 0 %>
+  <div class="alert alert-info">
+    <p>Enter one or more email addresses to add players to your team.</p>
+    <p>You can review the new player(s) and set their names on the next step.</p>
+  </div>
+
+  <%= form_tag new_team_team_members_path(current_team), :method => :get do %>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-8">
+          <textarea class="form-control" name="emails"></textarea>
+          <p class="help-block">Use comma-separated, space-separated, or one email address per line.</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">
+        Next
+      </button>
+    </div>
+  <% end %>
+<% else %>
+  <%= simple_form_for(@add_team_members, url: create_team_team_members_path, html: { class: "form-inline" }) do |f| %>
+    <%= f.error_messages %>
+      <div class="alert alert-info">
+        <p>Add or modify a name for each player (optional).</p>
+        <p>Players with a Breakpoint App account are not editable and will be marked with an <span class="label label-info">existing account</span> label.</p>
+      </div>
+      <ul class="list-group">
+        <%= f.simple_fields_for :users do |user_form| %>
+          <li class="list-group-item">
+            <%= user_form.input :name,
+              input_html: { style: "width: 200px;" },
+              label_html: { class: "sr-only" },
+              disabled: !user_form.object.new_record?,
+              placeholder: "Name" %>
+            <% unless user_form.object.new_record? %>
+              <span class="label label-info">existing account</span>
+            <% end %>
+            <%= user_form.object.email %>
+            <%= user_form.hidden_field :email%>
+          </li>
+        <% end %>
+      </ul>
+
+    <%= f.submit "Add players to team", class: "btn btn-primary" %>
+  <% end %>
+<% end %>
+

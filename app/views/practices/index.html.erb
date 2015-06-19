@@ -1,0 +1,27 @@
+<% subtitle 'Practices' %>
+
+<% if @upcoming_practices.empty? && @previous_practices.empty? %>
+  <div class="alert alert-info">
+    <h4>No practices for this team yet.</h4>
+    <%= link_to 'Add a practice', new_team_practice_path(current_team), :class => "alert-link" %> to get playing.
+  </div>
+  <p>
+    <%= link_to 'Add a practice', new_team_practice_path(current_team), :class => 'btn btn-default' %>
+  </p>
+<% else %>
+  <p>
+    <%= link_to 'Add a practice', new_team_practice_path(current_team), :class => 'btn btn-default' %>
+  </p>
+  <% if @upcoming_practices.present? %>
+    <%= render @upcoming_practices %>
+  <% else %>
+    <div class="alert alert-info">
+      No upcoming practices
+    </div>
+  <% end %>
+  <% if @previous_practices.present? %>
+    <h3>Previous Practices</h3>
+    <%= render @previous_practices %>
+  <% end %>
+<% end %>
+

@@ -1,0 +1,18 @@
+<% title 'Change your password' %>
+
+<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :method => :patch) do |f| %>
+  <%= f.error_messages %>
+
+  <div class="row">
+    <div class="col-md-3">
+      <%= f.input :reset_password_token, :as => :hidden %>
+      <%= f.full_error :reset_password_token %>
+
+      <%= f.input :password, :label => 'New password', :required => true %>
+      <%= f.input :password_confirmation, :label => 'Confirm your new password', :required => true %>
+    </div>
+  </div>
+
+  <%= f.button :submit, 'Change my password', :class => 'btn btn-primary' %>
+<% end %>
+

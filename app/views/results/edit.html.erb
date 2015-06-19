@@ -1,0 +1,37 @@
+<% subtitle 'Record results' %>
+
+<%= form_for(@match, :html => { :class => 'form-inline' } ) do |f| %>
+  <%= f.error_messages %>
+  <%= render :partial => 'match', :object => @match %>
+
+  <%= f.fields_for :match_lineups do |match_lineup_form| %>
+    <%= render :partial => 'lineup', :object => match_lineup_form.object %>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Set 1</th>
+          <th>Set 2</th>
+          <th>Set 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <%= match_lineup_form.fields_for :match_sets do |match_set_form| %>
+            <td>
+              <%= match_set_form.label      :games_won,  'Won' %>
+              <%= match_set_form.text_field :games_won,  :class => 'span1' %>
+              <%= match_set_form.label      :games_lost, 'Lost' %>
+              <%= match_set_form.text_field :games_lost, :class => 'span1' %>
+            </td>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.submit 'Save results', :class => 'btn btn-primary' %>
+  </div>
+<% end %>
+

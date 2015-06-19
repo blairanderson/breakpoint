@@ -1,0 +1,32 @@
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Member</th>
+      <% matches.each do |match| %>
+        <th><%= l match.date, :format => :short %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% current_team.users.order(:first_name).each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <% matches.each do |match| %>
+          <% availablility = match.response_for(user.id) %>
+          <% if availablility.no_response? %>
+            <td class="text-center">
+              <span class="label label-default">n/a</span>
+            </td>
+          <% else %>
+            <td class="text-center <%= availability_label(availablility.state) %>">
+              <span class="label label-<%= availability_label(availablility.state) %>">
+                <%= availablility.state %>
+              </span>
+            </td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

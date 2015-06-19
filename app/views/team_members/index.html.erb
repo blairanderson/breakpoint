@@ -1,0 +1,30 @@
+<% subtitle 'Team' %>
+
+<% if policy(current_team).captain? %>
+  <%= link_to('Add players', new_team_team_members_path(current_team), :class => 'btn btn-default') %>
+<% end %>
+
+<% if @team_members.present? || @team_members_welcome_email_unsent.present? %>
+  <h3>Team members</h3>
+<% end %>
+
+<% if @team_members_welcome_email_unsent.present? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      These members have never been sent a welcome email
+      <% if policy(current_team).captain? %>
+        <%= link_to 'Send welcome email to all of these members',
+          send_welcome_email_team_path(current_team),
+          :method => :post,
+          :data   => { :confirm => "Send welcome email to #{pluralize(@team_members_welcome_email_unsent.size, "member")} now?" },
+          :class  => 'btn btn-xs btn-info' %>
+       <% end %>
+    </div>
+    <%= render :partial => "team_members_index", :object => @team_members_welcome_email_unsent %>
+  </div>
+<% end %>
+
+<% if @team_members.present? %>
+  <%= render :partial => "team_members_index", :object => @team_members %>
+<% end %>
+

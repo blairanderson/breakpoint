@@ -1,0 +1,29 @@
+<% subtitle 'Preview and send availability request' %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <%= render partial: 'shared/mailer_preview_details', locals: { subject: @match_email.subject } %>
+  </div>
+  <div class="panel-body">
+    <%= raw @match_email.body %>
+  </div>
+</div>
+
+<%= form_tag notify_match_path(@match, team_id: current_team.id), method: :post do %>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-8">
+        <textarea placeholder="add extra comments" class="form-control" name="comments"></textarea>
+        <p class="help-block">Extra comments will be included in the email above "Thanks!"</p>
+      </div>
+    </div>
+  </div>
+
+  <%= submit_tag 'Email team', :class => 'btn btn-primary' %>
+  <% if @match.notified_team? %>
+    <span class="text-warning">
+      The match has not changed since this email was last sent
+    </span>
+  <% end %>
+<% end %>
+

@@ -1,0 +1,20 @@
+<% title 'Forgot your password?' %>
+
+<div class="row">
+  <div class="col-md-4">
+    <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name)) do |f| %>
+      <%= f.error_messages %>
+      <%= f.input :email, :required => true %>
+      <%= f.button :submit, 'Send me reset password instructions', :class => 'btn btn-primary btn-block' %>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <div class="alert alert-info">
+      <h4>Unsure of which email to use?</h4>
+      Please verify with your team captain the email they used when creating your account.
+      <br>
+      <%= mail_to "support@breakpointapp.com", "Email support", class: "alert-link" %> if you are still having problems.
+    </div>
+  </div>
+</div>
+

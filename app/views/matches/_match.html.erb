@@ -1,0 +1,102 @@
+<% response = match.response_for(current_user.id) %>
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <h4 class="panel-title" style="display: inline-block; vertical-align: middle;">
+      <a data-toggle="collapse" href="#match-<%= match.id %>">
+        <span class="glyphicon glyphicon-chevron-<%= match.date.future? ? "down" : "right"%>"></span>
+        <%= l match.date, :format => :long_date %>
+        - <%= match.team_location %>
+        <% if match.opponent.present? %>
+          against <%= match.opponent %>
+        <% end %>
+      </a>
+    </h4>
+
+    <% if policy(current_team).captain? %>
+      <%= link_to 'Edit match', edit_team_match_path(current_team, match), :class => 'pull-right btn btn-sm btn-default' %>
+    <% end %>
+  </div>
+  <div class="panel-collapse collapse<%= " in" if match.date.future? %>" id="match-<%= match.id %>">
+    <div class="panel-body">
+      <div class="alert alert-<%= availability_label(response.state) %>">
+        Can you play?
+        <div class="btn-group btn-group-sm">
+          <%= link_to "Yes",
+            save_availability_match_response_path(match, response, team_id: current_team.id, state: 'yes'),
+            data: { label: 'success' },
+            remote: true,
+            method: :post,
+            class: "availability btn btn-#{response.yes? ? 'success disabled' : 'default'}" %>
+
+          <%= link_to "Maybe",
+            save_availability_match_response_path(match, response, team_id: current_team.id, state: 'maybe'),
+            data: { label: 'info' },
+            remote: true,
+            method: :post,
+            class: "availability btn btn-#{response.maybe? ? 'info disabled' : 'default'}" %>
+
+          <%= link_to "No",
+            save_availability_match_response_path(match, response, team_id: current_team.id, state: 'no'),
+            data: { label: 'danger' },
+            remote: true,
+            method: :post,
+            class: "availability btn btn-#{response.no? ? 'danger disabled' : 'default'}" %>
+        </div>
+        <% if response.note.blank? %>
+          <%= link_to "Add note (for captain)", "#", class: "note-action" %>
+        <% else %>
+          <span><%= response.note %></span>
+          <%= link_to "Edit note", "#", class: "note-action" %>
+        <% end %>
+        <div class="hidden note-form form-inline btn-group">
+          <div class="form-group">
+            <%= text_field_tag :note, response.note, class: "note form-control input-sm", style: "width: 250px;" %>
+          </div>
+          <%= link_to "Save", save_note_match_response_path(match, response, team_id: current_team.id), class: "save-note" %>
+        </div>
+      </div>
+      <% if policy(current_team).captain? %>
+        <%= render partial: 'shared/match_details', locals: { match: match } %>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="row">
+              <div class="col-md-3">
+                <label>Availability:</label>
+              </div>
+              <div class="col-md-9">
+                <p>
+                  <%= link_to availability_email_team_match_path(current_team, match) do %>
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    Preview and send availability email
+                  <% end %>
+                </p>
+                <p>
+                  <%= link_to "Who can play?", availabilities_team_match_path(current_team, match) %>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-md-3 col-lg-2">
+                <label>Lineup:</label>
+              </div>
+              <div class="col-md-9 col-lg-10">
+                <p><%= link_to 'Set the lineup', edit_lineup_match_path(match, team_id: current_team.id) %></p>
+                <p>
+                  <%= link_to lineup_email_team_match_path(current_team, match) do %>
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    Preview and send lineup email
+                  <% end %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <%= render partial: 'shared/match_details', locals: { match: match } %>
+      <% end %>
+    </div>
+  </div>
+</div>
+

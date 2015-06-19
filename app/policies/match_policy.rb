@@ -1,0 +1,3 @@
+class MatchPolicy < ApplicationPolicy
+end
+

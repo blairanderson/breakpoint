@@ -1,0 +1,40 @@
+<% title 'Teams' %>
+
+<p><%= link_to 'New team', new_team_path, :class => 'btn btn-default' %></p>
+<% if @teams.empty? %>
+  <div class="alert alert-info">
+    <h4>You are currently not on any teams.</h4>
+    Make a <%= link_to 'new team', new_team_path, class: "alert-link" %> to get started.
+  </div>
+<% else %>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>Matches</th>
+        <th style="width: 99px;">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @teams.each do |team| %>
+      <tr>
+        <td><%= link_to team.name, team_matches_path(team) %></td>
+        <td><%= mail_to team.email_address %></td>
+        <td><%= l team.date %></td>
+        <td>
+          <%= team.singles_matches %> singles,
+          <%= team.doubles_matches %> doubles
+        </td>
+        <td>
+          <% if policy(team).captain? %>
+            <%= link_to 'Edit team', edit_team_path(team), :class => 'btn btn-xs btn-default' %>
+          <% end%>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+

@@ -1,0 +1,21 @@
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone Number</th>
+      <th>Responded at <b class="caret"></b></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% team_members.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= mail_to user.email %></td>
+      <td><%= user.phone_number %></td>
+      <td><%= l practice.response_for(user.id).updated_at, :format => :simple %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+

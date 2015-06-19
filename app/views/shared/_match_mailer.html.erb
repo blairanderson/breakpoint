@@ -1,0 +1,33 @@
+<table>
+  <tr>
+    <td style="vertical-align: top;">When:</td>
+    <td style="width: 20px">&nbsp;</td>
+    <td><%= l match.date, :format => :long %></td>
+  </tr>
+  <tr><td colspan="3"><br></td></tr>
+  <tr>
+    <td style="vertical-align: top;">Where:</td>
+    <td style="width: 20px">&nbsp;</td>
+    <td>
+      <strong><%= match.team_location %></strong>
+      <%= simple_format(match.location) %>
+    </td>
+  </tr>
+  <% if match.opponent.present? %>
+    <tr><td colspan="3"><br></td></tr>
+    <tr>
+      <td style="vertical-align: top;">Opponent:</td>
+      <td style="width: 20px">&nbsp;</td>
+      <td><%= match.opponent %></td>
+    </tr>
+  <% end %>
+  <% if match.comment.present? %>
+    <tr><td colspan="3"><br></td></tr>
+    <tr>
+      <td style="vertical-align: top;">Comments:</td>
+      <td style="width: 20px">&nbsp;</td>
+      <td><%= simple_format(match.comment) %></td>
+    </tr>
+  <% end %>
+</table>
+

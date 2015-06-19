@@ -1,0 +1,25 @@
+<table>
+  <tr>
+    <td style="vertical-align: top;">Lineup:</td>
+    <td style="width: 20px">&nbsp;</td>
+    <td>
+      <ul style="list-style-type: none;">
+        <% @match.match_lineups.includes(:match_players => :user).each do |lineup| %>
+          <li>
+            <strong><%= lineup.match_type %></strong>
+            <%= lineup.match_players.reject { |p| p.user.blank? }.map do |player| %>
+              <% player.user.name %>
+            <% end.join(', ') %>
+          </li>
+        <% end %>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<%= render partial: 'shared/match_mailer', locals: { match: @match } %>
+
+<% if @comments.present? %>
+  <p><%= simple_format @comments %></p>
+<% end %>
+

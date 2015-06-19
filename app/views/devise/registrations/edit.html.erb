@@ -1,0 +1,29 @@
+<% title 'Edit your profile' %>
+
+<div class="row">
+  <div class="col-md-8">
+    <%= simple_form_for(resource,
+      :as => resource_name,
+      :url => registration_path(resource_name)) do |f| %>
+      <%= f.error_messages %>
+
+      <%= f.input :first_name %>
+      <%= f.input :last_name %>
+      <%= f.input :email, :required => true, :autofocus => true %>
+      <%= f.input :phone_number, :hint => "we only share your phone number with other members of your team(s)" %>
+
+      <%= f.button :submit, 'Update', :class => 'btn btn-primary' %>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <div class="alert alert-info">
+      <h4>Cancel my account</h4>
+      Unhappy? <%= link_to "Cancel my account",
+        registration_path(resource_name),
+        :class => "alert-link",
+        :data => { :confirm => "Are you sure?" },
+        :method => :delete %>.
+    </div>
+  </div>
+</div>
+

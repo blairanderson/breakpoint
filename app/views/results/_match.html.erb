@@ -1,0 +1,9 @@
+<div class="alert alert-block <%= match_result_class(match) %>">
+  <strong>Match</strong>
+  &mdash;
+  <%= match.team_location %> on
+  <%= l match.date, :format => :long %>
+  <br>
+  <%= simple_format match.location %>
+</div>
+

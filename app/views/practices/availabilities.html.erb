@@ -1,0 +1,15 @@
+<% subtitle 'Review practice availability' %>
+
+<div class="alert alert-info">
+  The players are shown in the order of their response time. The player responded first will be the first in each group below.
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <%= render :partial => "practice_confirmations", 
+        locals: { status: 'yes', players: @practice.available_players, practice: @practice } %>
+  </div>
+  <div class="col-md-8">
+    <%= render :partial => "practice_confirmations", 
+        locals: { status: 'no', players: @practice.not_available_players, practice: @practice } %>
+  </div>
+</div>

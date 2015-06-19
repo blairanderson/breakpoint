@@ -1,0 +1,24 @@
+<% title 'Change your password' %>
+
+<div class="row">
+  <div class="col-md-8">
+    <%= simple_form_for(@user, :url => change_password_path) do |f| %>
+      <%= f.error_messages %>
+
+      <%= f.input :current_password, :label=> "Old password", :required => true %>
+      <%= f.input :password, :autocomplete => "off", :required => true %>
+      <%= f.input :password_confirmation, :required => true %>
+
+      <%= f.button :submit, 'Change password', :class => 'btn btn-primary' %>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <div class="alert alert-info">
+      <h4>Don't know your password?</h4>
+      <%= link_to "Reset your password using email",
+        send_reset_change_password_path,
+        :class => "alert-link" %>.
+    </div>
+  </div>
+</div>
+

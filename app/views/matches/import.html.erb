@@ -1,0 +1,25 @@
+<% subtitle 'Import Matches' %>
+
+<div class="alert alert-info">
+  <h4>Save time by importing matches from USTA</h4>
+  <p>All we need is your team number. We won't save the team number or use it for anything else except this one time to grab the schedule from the USTA website.</p>
+  <p>If you have a match on the same day, it will be skipped.</p>
+</div>
+
+
+<%= form_tag perform_import_team_matches_path(current_team) do %>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <%= label_tag :team_number %>
+        <%= text_field_tag :team_number, '', class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= label_tag :year %>
+        <%= text_field_tag :year, Time.now.year, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+  <%= submit_tag "Import", class: "btn btn-primary" %>
+<% end %>
+

@@ -1,0 +1,2 @@
+TryItSeeds.new.seed!
+

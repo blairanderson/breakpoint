@@ -1,0 +1,26 @@
+<% title 'Sign up' %>
+
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= f.error_messages %>
+  <div class="row">
+    <div class="col-md-3">
+      <%= f.input :first_name %>
+      <%= f.input :last_name %>
+      <%= f.input :email, :required => true, :autofocus => true %>
+      <%= f.input :phone_number %>
+      <%= f.input :password, :required => true %>
+      <%= f.input :password_confirmation, :required => true %>
+    </div>
+    <div class="col-md-4">
+      <div class="alert alert-info">
+        <h4>Not a team captain?</h4>
+        If you're not a team captain, it is likely that your team captain already created an account for you.
+        <br>
+        Please verify with them what email they used and try to <%= link_to 'sign in', new_user_session_path, class: 'alert-link' %>.
+      </div>
+    </div>
+  </div>
+
+  <%= f.button :submit, 'Sign up', :class => 'btn btn-primary' %>
+<% end %>
+

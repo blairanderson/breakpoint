@@ -1,0 +1,37 @@
+<% subtitle "Edit settings for #{@team_member.user.name} (#{@team_member.role})" %>
+
+<% if policy(current_team).captain? %>
+  <%= simple_form_for([current_team, @team_member]) do |f| %>
+    <%= f.error_messages %>
+
+    <div class="row">
+      <div class="col-md-3">
+        <%= f.input :role, collection: TeamMember::ROLES, value_method: :to_s, label_method: :humanize, include_blank: false %>
+      </div>
+    </div>
+    <p class="help-block">
+      Captain and Co-captain both have full access to everything. Members can't set lineups or edit matches.
+    </p>
+    <%= f.submit 'Save settings', :class => 'btn btn-primary' %>
+  <% end %>
+
+  <hr>
+<% end%>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="alert alert-danger">
+      <h4>Remove from team</h4>
+      <p>This will delete all match and practice availabilities for <%= @team_member.user.name %>.</p>
+      <p>You can <strong>NOT</strong> undo this action.</p>
+      <p>
+        <%= link_to 'Delete team member data and remove from team',
+          team_team_member_path(current_team, @team_member),
+          :data => { :confirm => 'Are you sure?' },
+          :method => :delete,
+          :class => 'btn btn-danger' %>
+      </p>
+    </div>
+  </div>
+</div>
+
