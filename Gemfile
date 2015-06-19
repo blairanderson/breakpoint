@@ -35,7 +35,6 @@ gem 'sass-rails', "~> 5.0"
 gem 'sidekiq'
 gem 'simple_form'
 gem 'sinatra',              require: false
-gem 'title'
 gem 'uglifier'
 gem 'unicorn'
 

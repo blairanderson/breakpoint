@@ -338,9 +338,6 @@ GEM
     timers (4.0.1)
       hitimes
     tins (1.5.2)
-    title (0.0.5)
-      i18n
-      rails (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.1)
@@ -425,7 +422,6 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   timecop
-  title
   uglifier
   unicorn
   web-console
