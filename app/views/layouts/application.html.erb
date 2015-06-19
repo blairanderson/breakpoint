@@ -15,11 +15,10 @@
     <% if Rails.env == 'production' %>
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-38883939-1', 'breakpointapp.com');
+        ga('create', 'UA-61052500-6', 'auto');
         ga('send', 'pageview');
       </script>
     <% end %>
@@ -111,30 +110,6 @@
         <hr>
         Need help? <%= mail_to "support@breakpointapp.com", "Email support", class: "support" %>
       </footer>
-
-      <script>
-        UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/tbxW2jO4KwUufpuDpYR30w.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
-
-        // Set colors
-        UserVoice.push(['set', {
-          accent_color: '#448dd6',
-          trigger_color: 'white',
-          trigger_background_color: 'rgba(46, 49, 51, 0.6)'
-        }]);
-
-        UserVoice.push(['identify', {
-          <% if user_signed_in? %>
-            email:      '<%= current_user.email %>',
-            name:       '<%= current_user.name %>',
-            created_at: <%= current_user.created_at.to_i %>,
-            id:         <%= current_user.id %>,
-            type:       '<%= current_user.captain? ? "captain" : "member" %>',
-          <% end %>
-        }]);
-
-        UserVoice.push(['addTrigger', { mode: 'smartvote', trigger_position: 'bottom-right' }]);
-        UserVoice.push(['autoprompt', {}]);
-      </script>
     </div>
   </body>
 </html>
